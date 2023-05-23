@@ -15,6 +15,7 @@ void Car::printCarCordsSignal(string& param)
 
 Car::Car(int x, int y, TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name)
 {
+	this->replaceByName();
 	this->x = x;
 	this->y = y;
 	if (y <= 0)

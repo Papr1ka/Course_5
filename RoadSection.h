@@ -13,9 +13,11 @@ private:
 public:
 	RoadSection(TreeBase* p_head_object, string s_name = "RoadSection", int length = 5);
 	void getColorSignal(string& param);
+	void printCarCordsSignal(string& param);
 
 	string setLengthHandler(string length);
 	string doTick(string param);
+	string printRoadHandler(string param);
 };
 
 #endif // !ROAD_SECTION_H

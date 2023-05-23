@@ -4,6 +4,7 @@
 #include "Car.h"
 #include "TrafficLightController.h"
 #include "DisplayScreen.h"
+#include "RoadSection.h"
 
 class InputObject : public TreeBase
 {
@@ -23,6 +24,7 @@ public:
 	void printCarCordsSignal(string& param);
 	void printSignal(string& param); 
 	void getColorSignal(string& param);
+	void printRoadSignal(string& param);
 };
 
 #endif // !INPUT_OBJECT_H

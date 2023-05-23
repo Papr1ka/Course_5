@@ -12,9 +12,29 @@ string RoadSection::setLengthHandler(string length)
 	return response;
 }
 
+string RoadSection::printRoadHandler(string param)
+{
+	int size = this->p_sub_objects.size();
+	string command, response;
+
+	for (int i = 0; i < size; i++)
+	{
+		this->emit_signal(
+			SIGNAL_D(RoadSection::printCarCordsSignal),
+			command
+		);
+	}
+	return response;
+}
+
 void RoadSection::getColorSignal(string& param)
 {
 	
+}
+
+void RoadSection::printCarCordsSignal(string& param)
+{
+
 }
 
 string RoadSection::doTick(string param)

@@ -19,6 +19,11 @@ void InputObject::getColorSignal(string& param)
 	
 }
 
+void InputObject::printRoadSignal(string& param)
+{
+
+}
+
 InputObject::InputObject(TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name)
 {
 	this->roadSectionObject = this->searchRoot("RoadSection");
@@ -70,7 +75,6 @@ void InputObject::inputCar(string line)
 	query << line;
 	query >> carNumber >> x >> y;
 	Car* obj = new Car(x, y, this->roadSectionObject, carNumber);
-	obj->replaceByName();
 	this->set_connect(
 		SIGNAL_D(InputObject::printCarCordsSignal),
 		obj,
@@ -80,6 +84,16 @@ void InputObject::inputCar(string line)
 		SIGNAL_D(Car::printCarCordsSignal),
 		this->displayScreenObject,
 		HANDLER_D(DisplayScreen::printHandler)
+	);
+	this->roadSectionObject->set_connect(
+		SIGNAL_D(RoadSection::printCarCordsSignal),
+		obj,
+		HANDLER_D(Car::printCarCordsHandler)
+	);
+	this->set_connect(
+		SIGNAL_D(InputObject::printRoadSignal),
+		this->roadSectionObject,
+		HANDLER_D(RoadSection::printRoadHandler)
 	);
 }
 
@@ -147,6 +161,8 @@ void InputObject::inputCommand(string line)
 			response = "yellow";
 		}
 		string toOut = "Traffic light color is " + response;
+		string test;
 		this->emit_signal(SIGNAL_D(InputObject::printSignal), toOut);
+		this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), test);
 	}
 }

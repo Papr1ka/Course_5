@@ -25,8 +25,8 @@ public:
 	Car(int x, int y, TreeBase* p_head_object, string s_name);
 	void move();
 
-	string printCarCordsHandler(string param);
 	void printCarCordsSignal(string& param);
+	string printCarCordsHandler(string param);
 };
 
 #endif // !Car_H

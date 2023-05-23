@@ -20,9 +20,10 @@ class TreeBase
 private:
 	string s_name;
 	TreeBase* p_head_object;
-	vector<TreeBase*> p_sub_objects;
 	vector <Conn*> connects;
 	int state;
+protected:
+	vector<TreeBase*> p_sub_objects;
 public:
 	typedef void (TreeBase ::* TYPE_SIGNAL) (string&);
 	typedef string (TreeBase ::* TYPE_HANDLER) (string);
