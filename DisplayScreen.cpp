@@ -8,6 +8,6 @@ DisplayScreen::DisplayScreen(TreeBase* p_head_object, string s_name) : TreeBase(
 string DisplayScreen::printHandler(string param)
 {
 	string response;
-	cout << param;
+	cout << endl << param;
 	return response;
 }

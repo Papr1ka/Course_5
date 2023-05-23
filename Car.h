@@ -23,10 +23,10 @@ private:
 
 public:
 	Car(int x, int y, TreeBase* p_head_object, string s_name);
-	void replaceByNumber();
 	void move();
 
-	string getCarCordsHandler(string param);
+	string printCarCordsHandler(string param);
+	void printCarCordsSignal(string& param);
 };
 
 #endif // !Car_H

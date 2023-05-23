@@ -1,10 +1,16 @@
 #include "Car.h"
 
-string Car::getCarCordsHandler(string param)
+string Car::printCarCordsHandler(string param)
 {
 	string response;
-	response = to_string(this->x) + " " + to_string(this->y);
+	string command;
+	this->emit_signal(SIGNAL_D(Car::printCarCordsSignal), command);
 	return response;
+}
+
+void Car::printCarCordsSignal(string& param)
+{
+	param = this->get_name() + " ( " + to_string(this->x) + ", " + to_string(this->y) + " )";
 }
 
 Car::Car(int x, int y, TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name)

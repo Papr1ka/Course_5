@@ -38,13 +38,13 @@ void IntersectionSystem::build_tree_objects()
 
 	this->get_sub_object("RoadSection")->set_connect(
 		SIGNAL_D(RoadSection::getColorSignal),
-		this->get_sub_object("TrafficLight"),
+		buffer->get_sub_object("TrafficLight"),
 		HANDLER_D(TrafficLight::getColorHandler)
 	);
 
 	this->get_sub_object("TrafficLightController")->set_connect(
 		SIGNAL_D(TrafficLightController::changeTrafficLightSignal),
-		this->get_sub_object("TrafficLight"),
+		buffer->get_sub_object("TrafficLight"),
 		HANDLER_D(TrafficLight::changeTrafficLightHandler)
 	);
 
@@ -56,7 +56,7 @@ void IntersectionSystem::build_tree_objects()
 
 	this->inputObject->set_connect(
 		SIGNAL_D(InputObject::printSignal),
-		this->get_sub_object("TrafficLight"),
+		buffer->get_sub_object("TrafficLight"),
 		HANDLER_D(TrafficLight::changeTrafficLightHandler)
 	);
 

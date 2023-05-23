@@ -3,12 +3,14 @@
 
 #include "Car.h"
 #include "TrafficLightController.h"
+#include "DisplayScreen.h"
 
 class InputObject : public TreeBase
 {
 private:
 	TreeBase* roadSectionObject;
 	TreeBase* trafficLightControllerObject;
+	TreeBase* displayScreenObject;
 public:
 	InputObject(TreeBase* p_head_object, string s_name = "InputObject");
 
@@ -18,7 +20,7 @@ public:
 	void inputCommand(string line);
 
 	void setRoadSizeSignal(string& param);
-	void getCarCordsSignal(string& param);
+	void printCarCordsSignal(string& param);
 	void printSignal(string& param); 
 	void getColorSignal(string& param);
 };

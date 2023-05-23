@@ -4,7 +4,7 @@ void InputObject::setRoadSizeSignal(string& param)
 {
 }
 
-void InputObject::getCarCordsSignal(string& param)
+void InputObject::printCarCordsSignal(string& param)
 {
 
 }
@@ -23,6 +23,7 @@ InputObject::InputObject(TreeBase* p_head_object, string s_name) : TreeBase(p_he
 {
 	this->roadSectionObject = this->searchRoot("RoadSection");
 	this->trafficLightControllerObject = this->searchRoot("TrafficLightController");
+	this->displayScreenObject = this->searchRoot("DisplayScreen");
 }
 
 string InputObject::readHandler()
@@ -71,9 +72,14 @@ void InputObject::inputCar(string line)
 	Car* obj = new Car(x, y, this->roadSectionObject, carNumber);
 	obj->replaceByName();
 	this->set_connect(
-		SIGNAL_D(InputObject::getCarCordsSignal),
+		SIGNAL_D(InputObject::printCarCordsSignal),
 		obj,
-		HANDLER_D(Car::getCarCordsHandler)
+		HANDLER_D(Car::printCarCordsHandler)
+	);
+	obj->set_connect(
+		SIGNAL_D(Car::printCarCordsSignal),
+		this->displayScreenObject,
+		HANDLER_D(DisplayScreen::printHandler)
 	);
 }
 
@@ -118,17 +124,10 @@ void InputObject::inputCommand(string line)
 		string command;
 		TreeBase* car = this->roadSectionObject->searchSub(other);
 		string response = this->emit_signal(
-			SIGNAL_D(InputObject::getCarCordsSignal),
+			SIGNAL_D(InputObject::printCarCordsSignal),
 			command,
 			car
 		);
-		stringstream cords;
-		cords << response;
-		int x;
-		int y;
-		cords >> x >> y;
-		string toOut = other + "( " + to_string(x) + ", " + to_string(y) + " )";
-		this->emit_signal(SIGNAL_D(InputObject::printSignal), toOut);
 	}
 	else if (command == "Display")
 	{

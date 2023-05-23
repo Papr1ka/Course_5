@@ -35,7 +35,8 @@ public:
 
 	TreeBase* get_head();
 	string get_name();
-	TreeBase* get_sub_object(string name);
+	TreeBase* get_sub_object(string name); 
+	const vector<TreeBase*> getSubObjects();
 	int getState();
 	void print_tree(string str = "");
 	void printTreeReady(string str = "");
