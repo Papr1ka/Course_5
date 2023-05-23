@@ -14,7 +14,6 @@ void IntersectionSystem::callInputSignal(string& param)
 void IntersectionSystem::build_tree_objects()
 {
 	TreeBase* buffer;
-	TreeBase* buffer2;
 	RoadSection* road;
 	buffer = new TrafficLightController(this);
 	new TrafficLight(buffer);
@@ -36,10 +35,16 @@ void IntersectionSystem::build_tree_objects()
 		HANDLER_D(RoadSection::setLengthHandler)
 	);
 
-	this->get_sub_object("RoadSection")->set_connect(
-		SIGNAL_D(RoadSection::getColorSignal),
+	this->inputObject->set_connect(
+		SIGNAL_D(InputObject::printColorSignal),
 		buffer->get_sub_object("TrafficLight"),
-		HANDLER_D(TrafficLight::getColorHandler)
+		HANDLER_D(TrafficLight::printColorHandler)
+	);
+
+	buffer->get_sub_object("TrafficLight")->set_connect(
+		SIGNAL_D(TrafficLight::printColorSignal),
+		this->get_sub_object("DisplayScreen"),
+		HANDLER_D(DisplayScreen::printHandler)
 	);
 
 	this->get_sub_object("TrafficLightController")->set_connect(
@@ -61,18 +66,18 @@ void IntersectionSystem::build_tree_objects()
 	);
 
 	string command;
-	do
+	while (this->getState() == 1)
 	{
-		command = this->emit_signal(SIGNAL_D(IntersectionSystem::callInputSignal), command);
-	} while (command != "End of cars");
+		this->emit_signal(SIGNAL_D(IntersectionSystem::callInputSignal), command);
+	}
 }
 
 int IntersectionSystem::exec_app()
 {
 	string command;
-	do
+	while (this->getState() == 3)
 	{
-		command = this->emit_signal(SIGNAL_D(IntersectionSystem::callInputSignal), command);
-	} while (command != "Turn off the system");
+		this->emit_signal(SIGNAL_D(IntersectionSystem::callInputSignal), command);
+	}
 	return 0;
 }

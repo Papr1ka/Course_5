@@ -16,17 +16,18 @@ public:
 		Left,
 		Bottom,
 	};
-private:
+public:
 	int x; //горизонтальная, слева направо
 	int y; //вертикальная, сверху вниз
 	Directions direction;
 
 public:
 	Car(int x, int y, TreeBase* p_head_object, string s_name);
+	void insertNew();
 	void move();
 
 	void printCarCordsSignal(string& param);
-	string printCarCordsHandler(string param);
+	void printCarCordsHandler(string param);
 };
 
 #endif // !Car_H

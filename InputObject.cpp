@@ -14,7 +14,7 @@ void InputObject::printSignal(string& param)
 
 }
 
-void InputObject::getColorSignal(string& param)
+void InputObject::printColorSignal(string& param)
 {
 	
 }
@@ -31,7 +31,7 @@ InputObject::InputObject(TreeBase* p_head_object, string s_name) : TreeBase(p_he
 	this->displayScreenObject = this->searchRoot("DisplayScreen");
 }
 
-string InputObject::readHandler()
+void InputObject::readHandler()
 {
 	string line;
 	getline(cin, line);
@@ -40,7 +40,8 @@ string InputObject::readHandler()
 	if (line == "End of cars" || line == "Turn off the system")
 	{
 		this->setState(++state);
-		return line;
+		this->getByPath("/")->setState(state);
+		return;
 	}
 
 	switch (state)
@@ -55,7 +56,6 @@ string InputObject::readHandler()
 		this->inputCommand(line);
 		break;
 	}
-	return line;
 }
 
 void InputObject::inputRoadLength(string line)
@@ -105,6 +105,7 @@ void InputObject::inputCommand(string line)
 	string commandToSend;
 
 	int value;
+	bool colorCondition = false;
 	query << line;
 	query >> command >> other;
 	if (command == "Switching")
@@ -114,17 +115,16 @@ void InputObject::inputCommand(string line)
 		query >> value;
 		if (other == "red")
 		{
+			colorCondition = true;
 			commandToSend += to_string(3);
-			commandToSend += " ";
-			commandToSend += to_string(value);
-			this->trafficLightControllerObject->emit_signal(
-				SIGNAL_D(TrafficLightController::changeTrafficLightSignal),
-				commandToSend
-			);
 		}
 		else if (other == "green")
 		{
+			colorCondition = true;
 			commandToSend += to_string(1);
+		}
+		if (colorCondition)
+		{
 			commandToSend += " ";
 			commandToSend += to_string(value);
 			this->trafficLightControllerObject->emit_signal(
@@ -137,32 +137,19 @@ void InputObject::inputCommand(string line)
 	{
 		string command;
 		TreeBase* car = this->roadSectionObject->searchSub(other);
-		string response = this->emit_signal(
-			SIGNAL_D(InputObject::printCarCordsSignal),
-			command,
-			car
-		);
+		if (car != nullptr)
+		{
+			this->emit_signal(
+				SIGNAL_D(InputObject::printCarCordsSignal),
+				command,
+				car
+			);
+		}
 	}
 	else if (command == "Display")
 	{
-		string response;
-		string command;
-		response = this->emit_signal(SIGNAL_D(InputObject::getColorSignal), command);
-		if (response == "1")
-		{
-			response = "green";
-		}
-		else if (response == "4")
-		{
-			response = "red";
-		}
-		else
-		{
-			response = "yellow";
-		}
-		string toOut = "Traffic light color is " + response;
-		string test;
-		this->emit_signal(SIGNAL_D(InputObject::printSignal), toOut);
-		this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), test);
+		string command, command2;
+		this->emit_signal(SIGNAL_D(InputObject::printColorSignal), command);
+		this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), command2);
 	}
 }

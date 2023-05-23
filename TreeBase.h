@@ -10,6 +10,7 @@
 
 #define SIGNAL_D( signal_f ) ( TreeBase::TYPE_SIGNAL ) ( & signal_f )
 #define HANDLER_D( handler_f ) ( TreeBase::TYPE_HANDLER ) ( & handler_f )
+#define EMPTY_METHOD_D( method_f ) ( TreeBase::EMPTY_METHOD ) ( & method_f )
 
 struct Conn;
 
@@ -17,46 +18,44 @@ using namespace std;
 
 class TreeBase
 {
-private:
+protected:
 	string s_name;
 	TreeBase* p_head_object;
 	vector <Conn*> connects;
 	int state;
-protected:
-	vector<TreeBase*> p_sub_objects;
 public:
+	vector<TreeBase*> p_sub_objects;
 	typedef void (TreeBase ::* TYPE_SIGNAL) (string&);
-	typedef string (TreeBase ::* TYPE_HANDLER) (string);
+	typedef void (TreeBase ::* TYPE_HANDLER) (string);
+	typedef void (TreeBase ::* EMPTY_METHOD) ();
 
-	TreeBase(TreeBase* p_head_object, string s_name = "root");
-
+	TreeBase(TreeBase* p_head_object, string s_name = "root", EMPTY_METHOD method = EMPTY_METHOD_D(TreeBase::insertNew));
 	~TreeBase();
 
 	bool set_name(string name); //true если на том же уровне иерархии нету объектов с таким же именем
-
-	TreeBase* get_head();
-	string get_name();
-	TreeBase* get_sub_object(string name); 
-	const vector<TreeBase*> getSubObjects();
-	int getState();
-	void print_tree(string str = "");
-	void printTreeReady(string str = "");
-	TreeBase* searchSub(string name);
-	TreeBase* searchRoot(string name);
-	void setState(int state);
 	bool reOrder(TreeBase* new_head);
 	bool deleteSub(string name);
+
+	TreeBase* get_head();
+	TreeBase* get_sub_object(string name); 
+	TreeBase* searchSub(string name);
+	TreeBase* searchRoot(string name);
 	TreeBase* getByPath(string name);
+
+	string get_name();
 	string getAbsoluteCoordinate();
-	void set_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLER p_object_handler);
-	string emit_signal(TYPE_SIGNAL p_signal, string& s_command, TreeBase* handlerObject = nullptr);
-	void delete_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLER p_object_handler);
-	virtual void signal(string& param);
-	virtual void handler(string param);
-	TYPE_SIGNAL getSignal();
-	TYPE_HANDLER getHandler();
+
+	int getState();
+
+	void insertNew();
+	void print_tree(string str = "");
+	void printTreeReady(string str = "");
+	void setState(int state);
 	void setSubTreeReady();
 	void replaceByName();
+	void set_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLER p_object_handler);
+	void emit_signal(TYPE_SIGNAL p_signal, string& s_command, TreeBase* handlerObject = nullptr);
+	void delete_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLER p_object_handler);
 };
 
 struct Conn                 // Структура задания одной связи

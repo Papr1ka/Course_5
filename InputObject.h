@@ -15,7 +15,7 @@ private:
 public:
 	InputObject(TreeBase* p_head_object, string s_name = "InputObject");
 
-	string readHandler();
+	void readHandler();
 	void inputRoadLength(string line);
 	void inputCar(string line);
 	void inputCommand(string line);
@@ -23,7 +23,7 @@ public:
 	void setRoadSizeSignal(string& param);
 	void printCarCordsSignal(string& param);
 	void printSignal(string& param); 
-	void getColorSignal(string& param);
+	void printColorSignal(string& param);
 	void printRoadSignal(string& param);
 };
 

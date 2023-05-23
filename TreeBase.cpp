@@ -1,10 +1,19 @@
 #include "TreeBase.h"
 
-TreeBase::TreeBase(TreeBase* p_head_object, string s_name)
+void test(TreeBase* obj)
+{
+	obj->insertNew();
+}
+
+TreeBase::TreeBase(TreeBase* p_head_object, string s_name, EMPTY_METHOD method)
 {
 	this->p_head_object = p_head_object;
 	this->s_name = s_name;
+	(this->*method) ();
+}
 
+void TreeBase::insertNew()
+{
 	if (p_head_object != nullptr)
 	{
 		p_head_object->p_sub_objects.push_back(this);
@@ -35,16 +44,6 @@ void TreeBase::replaceByName()
 	{
 		head->p_sub_objects.erase(--head->p_sub_objects.cend());
 	}
-}
-
-void TreeBase::signal(string& param)
-{
-	cout << "test" << endl;
-}
-
-void TreeBase::handler(string param)
-{
-	cout << "test2" << endl;
 }
 
 TreeBase* TreeBase::get_head()
@@ -341,12 +340,12 @@ void TreeBase::set_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLE
 	this->connects.push_back(p_value);
 }
 
-string TreeBase::emit_signal(TYPE_SIGNAL p_signal, string& s_command, TreeBase* handlerObject)
+void TreeBase::emit_signal(TYPE_SIGNAL p_signal, string& s_command, TreeBase* handlerObject)
 {
 	string response;
 	if (this->state == 0)
 	{
-		return response;
+		return;
 	}
 	TYPE_HANDLER p_handler;
 	TreeBase* p_object;
@@ -359,10 +358,9 @@ string TreeBase::emit_signal(TYPE_SIGNAL p_signal, string& s_command, TreeBase* 
 			p_handler = connects[i]->p_handler;
 			p_object = connects[i]->p_object;
 
-			return (p_object->*p_handler) (s_command);
+			(p_object->*p_handler) (s_command);
 		}
 	}
-	return response;
 }
 
 void TreeBase::delete_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLER p_object_handler)
@@ -375,25 +373,6 @@ void TreeBase::delete_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HAN
 			this->connects.erase(this->connects.begin() + i);
 		}
 	}
-}
-
-TreeBase::TYPE_SIGNAL TreeBase::getSignal()
-{
-	return (TreeBase::TYPE_SIGNAL)&TreeBase::signal;
-}
-
-TreeBase::TYPE_HANDLER TreeBase::getHandler()
-{
-	return (TreeBase::TYPE_HANDLER)&TreeBase::handler;
-}
-
-void signal(string& param)
-{
-	cout << "asdffasd" << endl;
-}
-void handler(string param)
-{
-	cout << "1325423gcvbvb" << endl;
 }
 
 void TreeBase::setSubTreeReady()

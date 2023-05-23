@@ -1,11 +1,34 @@
 #include "Car.h"
 
-string Car::printCarCordsHandler(string param)
+void Car::printCarCordsHandler(string param)
 {
-	string response;
 	string command;
 	this->emit_signal(SIGNAL_D(Car::printCarCordsSignal), command);
-	return response;
+}
+
+void Car::insertNew()
+{
+	TreeBase* head = this->get_head();
+	if (head == nullptr)
+	{
+		return;
+	}
+	auto end = head->p_sub_objects.cend();
+	bool pasted = false;
+
+	for (auto iter = head->p_sub_objects.cbegin(); iter != end; iter++)
+	{
+		if ((*iter)->get_name() > this->s_name)
+		{
+			head->p_sub_objects.insert(iter, this);
+			pasted = true;
+			break;
+		}
+	}
+	if (not pasted)
+	{
+		head->p_sub_objects.push_back(this);
+	}
 }
 
 void Car::printCarCordsSignal(string& param)
@@ -13,9 +36,8 @@ void Car::printCarCordsSignal(string& param)
 	param = this->get_name() + " ( " + to_string(this->x) + ", " + to_string(this->y) + " )";
 }
 
-Car::Car(int x, int y, TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name)
+Car::Car(int x, int y, TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name, EMPTY_METHOD_D(Car::insertNew))
 {
-	this->replaceByName();
 	this->x = x;
 	this->y = y;
 	if (y <= 0)

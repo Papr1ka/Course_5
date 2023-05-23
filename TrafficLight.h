@@ -11,6 +11,7 @@ public:
 		Green = 1,
 		Yellow,
 		Red,
+		Yellow2
 	};
 private:
 	//÷вет дл€ горизонтальных полос
@@ -19,8 +20,9 @@ private:
 	int ticksRed;
 public:
 	TrafficLight(TreeBase* p_head_object, string s_name = "TrafficLight", Colors color = Colors::Green, int ticksGreen = 5, int ticksRed = 5);
-	string changeTrafficLightHandler(string param);
-	string getColorHandler(string param);
+	void changeTrafficLightHandler(string param);
+	void printColorHandler(string param);
+	void printColorSignal(string& param);
 };
 
 #endif // !TRAFFIC_LIGHT_H

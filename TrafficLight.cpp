@@ -7,7 +7,7 @@ TrafficLight::TrafficLight(TreeBase* p_head_object, string s_name, Colors color,
 	this->ticksRed = ticksRed;
 }
 
-string TrafficLight::changeTrafficLightHandler(string param)
+void TrafficLight::changeTrafficLightHandler(string param)
 {
 	stringstream query;
 	query << param;
@@ -29,13 +29,35 @@ string TrafficLight::changeTrafficLightHandler(string param)
 			break;
 		}
 	}
-	string response;
-	return response;
 }
 
-string TrafficLight::getColorHandler(string param)
+void TrafficLight::printColorHandler(string param)
 {
-	int value = this->getState();
-	string response = to_string(value);
-	return response;
+	string command;
+	this->emit_signal(
+		SIGNAL_D(TrafficLight::printColorSignal),
+		command
+	);
+}
+
+void TrafficLight::printColorSignal(string& param)
+{
+	Colors state = (Colors) this->getState();
+	param = "Traffic light color is ";
+
+	switch (state)
+	{
+	case TrafficLight::Green:
+		param += "green";
+		break;
+	case TrafficLight::Red:
+		param += "red";
+		break;
+	case TrafficLight::Yellow:
+		param += "yellow";
+		break;
+	case TrafficLight::Yellow2:
+		param += "yellow";
+		break;
+	}
 }
