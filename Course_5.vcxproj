@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Car.h" />
+    <ClInclude Include="Cell.h" />
     <ClInclude Include="DisplayScreen.h" />
     <ClInclude Include="InputObject.h" />
     <ClInclude Include="IntersectionSystem.h" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="DisplayScreen.cpp" />
     <ClCompile Include="InputObject.cpp" />
     <ClCompile Include="IntersectionSystem.cpp" />

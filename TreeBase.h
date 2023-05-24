@@ -56,6 +56,7 @@ public:
 	void set_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLER p_object_handler);
 	void emit_signal(TYPE_SIGNAL p_signal, string& s_command, TreeBase* handlerObject = nullptr);
 	void delete_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLER p_object_handler);
+	void deleteConnects();
 };
 
 struct Conn                 // Структура задания одной связи

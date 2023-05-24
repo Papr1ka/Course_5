@@ -18,11 +18,14 @@ private:
 	//Состояния: 1 -> зелёный, 2 -> жёлтый после зелёного, 3 -> красный, 4 -> жёлтый после красного
 	int ticksGreen;
 	int ticksRed;
+	int ticks;
 public:
 	TrafficLight(TreeBase* p_head_object, string s_name = "TrafficLight", Colors color = Colors::Green, int ticksGreen = 5, int ticksRed = 5);
 	void changeTrafficLightHandler(string param);
 	void printColorHandler(string param);
 	void printColorSignal(string& param);
+
+	void doTackHandler();
 };
 
 #endif // !TRAFFIC_LIGHT_H

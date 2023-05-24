@@ -80,4 +80,15 @@ Car::Car(int x, int y, TreeBase* p_head_object, string s_name) : TreeBase(p_head
 
 void Car::move()
 {
+	//Вызвать сигнал onMove с текущими координатами
+}
+
+void Car::CallMoveIfFrontIsFreeSignal(string& param)
+{
+	param = this->get_name() + " " + to_string(this->x) + " " + to_string(this->y);
+}
+
+void Car::onMoveSignal(string& param)
+{
+	param = this->get_name() + " " + param + " " + to_string(this->x) + " " + to_string(this->y);
 }

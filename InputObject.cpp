@@ -26,9 +26,6 @@ void InputObject::printRoadSignal(string& param)
 
 InputObject::InputObject(TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name)
 {
-	this->roadSectionObject = this->searchRoot("RoadSection");
-	this->trafficLightControllerObject = this->searchRoot("TrafficLightController");
-	this->displayScreenObject = this->searchRoot("DisplayScreen");
 }
 
 void InputObject::readHandler()
@@ -74,7 +71,7 @@ void InputObject::inputCar(string line)
 
 	query << line;
 	query >> carNumber >> x >> y;
-	Car* obj = new Car(x, y, this->roadSectionObject, carNumber);
+	Car* obj = new Car(x, y, this->searchRoot("RoadSection"), carNumber);
 	this->set_connect(
 		SIGNAL_D(InputObject::printCarCordsSignal),
 		obj,
@@ -82,18 +79,23 @@ void InputObject::inputCar(string line)
 	);
 	obj->set_connect(
 		SIGNAL_D(Car::printCarCordsSignal),
-		this->displayScreenObject,
+		this->searchRoot("DisplayScreen"),
 		HANDLER_D(DisplayScreen::printHandler)
 	);
-	this->roadSectionObject->set_connect(
+	this->searchRoot("RoadSection")->set_connect(
 		SIGNAL_D(RoadSection::printCarCordsSignal),
 		obj,
 		HANDLER_D(Car::printCarCordsHandler)
 	);
-	this->set_connect(
-		SIGNAL_D(InputObject::printRoadSignal),
-		this->roadSectionObject,
-		HANDLER_D(RoadSection::printRoadHandler)
+	obj->set_connect(
+		SIGNAL_D(Car::onMoveSignal),
+		this->searchRoot("RoadSection"),
+		HANDLER_D(RoadSection::onCarMoveHandler)
+	);
+	obj->set_connect(
+		SIGNAL_D(Car::CallMoveIfFrontIsFreeSignal),
+		this->searchRoot("RoadSection"),
+		HANDLER_D(RoadSection::CallMoveIfFrontIsFreeHandler)
 	);
 }
 
@@ -107,49 +109,57 @@ void InputObject::inputCommand(string line)
 	int value;
 	bool colorCondition = false;
 	query << line;
-	query >> command >> other;
-	if (command == "Switching")
+	query >> command;
+	if (command == "SHOWTREE")
+	{
+		this->get_head()->printTreeReady();
+	}
+	else
 	{
 		query >> other;
-		query >> other;
-		query >> value;
-		if (other == "red")
+		if (command == "Switching")
 		{
-			colorCondition = true;
-			commandToSend += to_string(3);
+			query >> other;
+			query >> other;
+			query >> value;
+			if (other == "red")
+			{
+				colorCondition = true;
+				commandToSend += to_string(3);
+			}
+			else if (other == "green")
+			{
+				colorCondition = true;
+				commandToSend += to_string(1);
+			}
+			if (colorCondition)
+			{
+				commandToSend += " ";
+				commandToSend += to_string(value);
+				this->searchRoot("TrafficLightController")->emit_signal(
+					SIGNAL_D(TrafficLightController::changeTrafficLightSignal),
+					commandToSend
+				);
+			}
 		}
-		else if (other == "green")
+		else if (command == "Car")
 		{
-			colorCondition = true;
-			commandToSend += to_string(1);
+			string command;
+			TreeBase* car = this->searchRoot("RoadSection")->searchSub(other);
+			if (car != nullptr)
+			{
+				this->emit_signal(
+					SIGNAL_D(InputObject::printCarCordsSignal),
+					command,
+					car
+				);
+			}
 		}
-		if (colorCondition)
+		else if (command == "Display")
 		{
-			commandToSend += " ";
-			commandToSend += to_string(value);
-			this->trafficLightControllerObject->emit_signal(
-				SIGNAL_D(TrafficLightController::changeTrafficLightSignal),
-				commandToSend
-			);
+			string command, command2;
+			this->emit_signal(SIGNAL_D(InputObject::printColorSignal), command);
+			this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), command2);
 		}
-	}
-	else if (command == "Car")
-	{
-		string command;
-		TreeBase* car = this->roadSectionObject->searchSub(other);
-		if (car != nullptr)
-		{
-			this->emit_signal(
-				SIGNAL_D(InputObject::printCarCordsSignal),
-				command,
-				car
-			);
-		}
-	}
-	else if (command == "Display")
-	{
-		string command, command2;
-		this->emit_signal(SIGNAL_D(InputObject::printColorSignal), command);
-		this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), command2);
 	}
 }

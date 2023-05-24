@@ -8,10 +8,6 @@
 
 class InputObject : public TreeBase
 {
-private:
-	TreeBase* roadSectionObject;
-	TreeBase* trafficLightControllerObject;
-	TreeBase* displayScreenObject;
 public:
 	InputObject(TreeBase* p_head_object, string s_name = "InputObject");
 

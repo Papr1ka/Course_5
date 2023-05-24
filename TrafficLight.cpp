@@ -61,3 +61,45 @@ void TrafficLight::printColorSignal(string& param)
 		break;
 	}
 }
+
+void TrafficLight::doTackHandler()
+{
+	Colors state = (Colors)this->getState();
+
+	switch (state)
+	{
+	case TrafficLight::Green:
+
+		this->ticks += 1;
+		if (this->ticks >= this->ticksGreen)
+		{
+			this->ticks = 0;
+			this->state++;
+		}
+		break;
+	case TrafficLight::Red:
+		this->ticks += 1;
+		if (this->ticks >= this->ticksRed)
+		{
+			this->ticks = 0;
+			this->state++;
+		}
+		break;
+	case TrafficLight::Yellow:
+		this->ticks += 1;
+		if (this->ticks >= 2)
+		{
+			this->ticks = 0;
+			this->state++;
+		}
+		break;
+	case TrafficLight::Yellow2:
+		this->ticks += 1;
+		if (this->ticks >= 2)
+		{
+			this->ticks = 0;
+			this->state = Colors::Green;
+		}
+		break;
+	}
+}

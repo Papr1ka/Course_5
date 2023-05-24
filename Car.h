@@ -27,7 +27,9 @@ public:
 	void move();
 
 	void printCarCordsSignal(string& param);
+	void CallMoveIfFrontIsFreeSignal(string& param);
 	void printCarCordsHandler(string param);
+	void onMoveSignal(string& param);
 };
 
 #endif // !Car_H

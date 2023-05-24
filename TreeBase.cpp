@@ -58,6 +58,7 @@ TreeBase::~TreeBase()
 	{
 		delete this->p_sub_objects[i];
 	}
+	this->deleteConnects();
 }
 
 TreeBase* TreeBase::get_sub_object(string s_name)
@@ -223,6 +224,39 @@ bool TreeBase::deleteSub(string name)
 		}
 	}
 	return false;
+}
+
+void TreeBase::deleteConnects()
+{
+	TreeBase* rootObject = this;
+	while (rootObject->get_head() != nullptr) {
+		rootObject = rootObject->get_head();
+	}
+
+	queue<TreeBase*> queue;
+	queue.push(rootObject);
+	while (!queue.empty())
+	{
+		TreeBase* obj = queue.front();
+		queue.pop();
+
+		int size = obj->connects.size();
+		for (int i = 0; i < size; i++)
+		{
+		
+			if (obj->connects[i]->p_object == this)
+			{
+				delete obj->connects[i];
+				obj->connects.erase(obj->connects.begin() + i);
+				i--;
+			}
+		}
+		size = obj->p_sub_objects.size();
+		for (int i = 0; i < size; i++)
+		{
+			queue.push(obj->p_sub_objects[i]);
+		}
+	}
 }
 
 bool TreeBase::reOrder(TreeBase* new_head)
