@@ -62,7 +62,23 @@ void TrafficLight::printColorSignal(string& param)
 	}
 }
 
-void TrafficLight::doTackHandler()
+
+void TrafficLight::getColorHandler(string param)
+{
+	string command;
+	this->emit_signal(
+		SIGNAL_D(TrafficLight::emitColorSignal),
+		command
+	);
+}
+
+void TrafficLight::emitColorSignal(string& param)
+{
+	param = to_string(this->getState());
+}
+
+
+void TrafficLight::doTactHandler()
 {
 	Colors state = (Colors)this->getState();
 

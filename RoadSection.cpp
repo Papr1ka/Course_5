@@ -9,7 +9,9 @@ RoadSection::RoadSection(TreeBase* p_head_object, string s_name, int length) : T
 	this->cells.push_back(new Cell(1, -1, nullptr));
 	this->cells.push_back(new Cell(-1, -1, nullptr));
 
-	for (int i = 2; i < length; i++)
+	int length_plus = length + 1;
+
+	for (int i = 2; i < length_plus; i++)
 	{
 		this->cells.push_back(new Cell(-1, i, nullptr));
 		this->cells.push_back(new Cell(-1, -i, nullptr));
@@ -56,9 +58,39 @@ void RoadSection::printCarCordsSignal(string& param)
 
 }
 
-void RoadSection::doTick(string param)
+void RoadSection::doTactSignal(string& param)
+{
+
+}
+
+void RoadSection::doTactHandler(string param)
 {
 	//вызвать метод move у машин
+	string command;
+	this->emit_signal(
+		SIGNAL_D(RoadSection::getColorSignal),
+		command
+	);
+	string command2;
+	this->emit_signal(
+		SIGNAL_D(RoadSection::doTactSignal),
+		command2
+	);
+}
+
+void RoadSection::emitCarFontStateAndColorSignal(string& param)
+{
+	param = to_string(this->currentColor);
+}
+
+void RoadSection::getColorSignal(string& param)
+{
+
+}
+
+void RoadSection::emitColorHandler(string param)
+{
+	this->currentColor = stoi(param);
 }
 
 void RoadSection::CallMoveIfFrontIsFreeHandler(string param)
@@ -70,6 +102,17 @@ void RoadSection::CallMoveIfFrontIsFreeHandler(string param)
 	int x, y;
 
 	query >> name >> x >> y;
+	Cell* cell = this->getCell(x, y);
+	string command;
+
+	if (cell == nullptr || cell->isEmpty())
+	{
+		this->emit_signal(
+			SIGNAL_D(RoadSection::emitCarFontStateAndColorSignal),
+			command,
+			this->get_sub_object(name)
+		);
+	}
 }
 
 void RoadSection::setCell(int x, int y, TreeBase* obj)
@@ -84,6 +127,21 @@ void RoadSection::setCell(int x, int y, TreeBase* obj)
 			cell->car = obj;
 		}
 	}
+}
+
+Cell* RoadSection::getCell(int x, int y)
+{
+	Cell* cell;
+	int size = this->cells.size();
+	for (int i = 0; i < size; i++)
+	{
+		cell = this->cells[i];
+		if (cell->x == x && cell->y == y)
+		{
+			return cell;
+		}
+	}
+	return nullptr;
 }
 
 void RoadSection::printSignal(string& param)
@@ -101,7 +159,7 @@ void RoadSection::onCarMoveHandler(string param)
 
 	TreeBase* car = this->get_sub_object(name);
 
-	if (x > this->length || y > this->length)
+	if (abs(x) > this->length || abs(y) > this->length)
 	{
 		string command;
 		command = name + " the car left the road section";
@@ -110,7 +168,7 @@ void RoadSection::onCarMoveHandler(string param)
 			SIGNAL_D(RoadSection::printSignal),
 			command
 		);
-		this->deleteSub(param);
+		this->deleteSub(name);
 	}
 	else
 	{

@@ -249,6 +249,7 @@ void TreeBase::deleteConnects()
 				delete obj->connects[i];
 				obj->connects.erase(obj->connects.begin() + i);
 				i--;
+				size--;
 			}
 		}
 		size = obj->p_sub_objects.size();

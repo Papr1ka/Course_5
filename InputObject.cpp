@@ -28,6 +28,11 @@ InputObject::InputObject(TreeBase* p_head_object, string s_name) : TreeBase(p_he
 {
 }
 
+void InputObject::doTactSignal(string& param)
+{
+	
+}
+
 void InputObject::readHandler()
 {
 	string line;
@@ -87,6 +92,11 @@ void InputObject::inputCar(string line)
 		obj,
 		HANDLER_D(Car::printCarCordsHandler)
 	);
+	this->searchRoot("RoadSection")->set_connect(
+		SIGNAL_D(RoadSection::doTactSignal),
+		obj,
+		HANDLER_D(Car::doTactHandler)
+	);
 	obj->set_connect(
 		SIGNAL_D(Car::onMoveSignal),
 		this->searchRoot("RoadSection"),
@@ -96,6 +106,11 @@ void InputObject::inputCar(string line)
 		SIGNAL_D(Car::CallMoveIfFrontIsFreeSignal),
 		this->searchRoot("RoadSection"),
 		HANDLER_D(RoadSection::CallMoveIfFrontIsFreeHandler)
+	);
+	this->searchRoot("RoadSection")->set_connect(
+		SIGNAL_D(RoadSection::emitCarFontStateAndColorSignal),
+		obj,
+		HANDLER_D(Car::moveHandler)
 	);
 }
 
@@ -162,4 +177,15 @@ void InputObject::inputCommand(string line)
 			this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), command2);
 		}
 	}
+	string command2, command3;
+	this->emit_signal(
+		SIGNAL_D(InputObject::doTactSignal),
+		command2,
+		this->searchRoot("TrafficLight")
+	);
+	this->emit_signal(
+		SIGNAL_D(InputObject::doTactSignal),
+		command3,
+		this->searchRoot("RoadSection")
+	);
 }

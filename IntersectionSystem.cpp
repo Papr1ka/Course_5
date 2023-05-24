@@ -77,6 +77,29 @@ void IntersectionSystem::build_tree_objects()
 		HANDLER_D(RoadSection::printRoadHandler)
 	);
 
+	this->get_sub_object("RoadSection")->set_connect(
+		SIGNAL_D(RoadSection::getColorSignal),
+		buffer->get_sub_object("TrafficLight"),
+		HANDLER_D(TrafficLight::getColorHandler)
+	);
+	buffer->get_sub_object("TrafficLight")->set_connect(
+		SIGNAL_D(TrafficLight::emitColorSignal),
+		this->get_sub_object("RoadSection"),
+		HANDLER_D(RoadSection::emitColorHandler)
+	);
+
+	this->get_sub_object("InputObject")->set_connect(
+		SIGNAL_D(InputObject::doTactSignal),
+		buffer->get_sub_object("TrafficLight"),
+		HANDLER_D(TrafficLight::doTactHandler)
+	);
+
+	this->get_sub_object("InputObject")->set_connect(
+		SIGNAL_D(InputObject::doTactSignal),
+		this->get_sub_object("RoadSection"),
+		HANDLER_D(RoadSection::doTactHandler)
+	);
+
 	string command;
 	while (this->getState() == 1)
 	{

@@ -23,9 +23,11 @@ public:
 	TrafficLight(TreeBase* p_head_object, string s_name = "TrafficLight", Colors color = Colors::Green, int ticksGreen = 5, int ticksRed = 5);
 	void changeTrafficLightHandler(string param);
 	void printColorHandler(string param);
+	void getColorHandler(string param);
 	void printColorSignal(string& param);
+	void emitColorSignal(string& param);
 
-	void doTackHandler();
+	void doTactHandler();
 };
 
 #endif // !TRAFFIC_LIGHT_H
