@@ -86,33 +86,48 @@ void Car::moveHandler(string param)
 	Directions direction = (Directions)this->getState();
 	
 	bool willMove = false;
-
-	switch (color)
+	if (abs(x) > 2 || abs(y) > 2)
 	{
-	case TrafficLight::Green:
-		if (this->state == Directions::Right || this->state == Directions::Left)
+		willMove = true;
+	}
+	else
+	{
+		switch (color)
 		{
-			willMove = true;
+		case TrafficLight::Green:
+			if (
+				((direction == Directions::Right) && (x == -2 && y == -1)) ||
+				((direction == Directions::Left) && (x == 2 && y == 1))
+			)
+			{
+				willMove = true;
+			}
+			break;
+		case TrafficLight::Yellow:
+			break;
+		case TrafficLight::Red:
+			if (
+				((direction == Directions::Top) && (x == 1 && y == -2)) ||
+				((direction == Directions::Bottom) && (x == -1 && y == 2))
+			)
+			{
+				willMove = true;
+			}
+			break;
+		case TrafficLight::Yellow2:
+			break;
 		}
-	case TrafficLight::Yellow:
-		
-		if (abs(this->x) <= 1 && abs(this->y) <= 1)
-		{
-			willMove = true;
-		}
+	}
 
-	case TrafficLight::Red:
-		if (this->state == Directions::Top || this->state == Directions::Bottom)
-		{
-			willMove = true;
-		}
-		break;
-	case TrafficLight::Yellow2:
-		if (abs(this->x) <= 1 && abs(this->y) <= 1)
-		{
-			willMove = true;
-		}
-		break;
+	if (
+		(x == -2 && y == 1) ||
+		(x == 1 && y == 2) ||
+		(x == 2 && y == -1) ||
+		(x == -1 && y == -2) ||
+		(abs(x) <= 1 && abs(y) <= 1)
+	)
+	{
+		willMove = true;
 	}
 
 	if (!willMove)
@@ -124,15 +139,31 @@ void Car::moveHandler(string param)
 	{
 	case Car::Top:
 		this->y = y + 1;
+		if (this->y == 0)
+		{
+			y++;
+		}
 		break;
 	case Car::Right:
 		this->x = x + 1;
+		if (this->x == 0)
+		{
+			x++;
+		}
 		break;
 	case Car::Left:
 		this->x = x - 1;
+		if (this->x == 0)
+		{
+			x--;
+		}
 		break;
 	case Car::Bottom:
 		this->y = y - 1;
+		if (this->y == 0)
+		{
+			y--;
+		}
 		break;
 	};
 	this->emit_signal(

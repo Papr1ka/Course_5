@@ -5,6 +5,7 @@ TrafficLight::TrafficLight(TreeBase* p_head_object, string s_name, Colors color,
 	this->setState(color);
 	this->ticksGreen = ticksGreen;
 	this->ticksRed = ticksRed;
+	this->ticks = -1;
 }
 
 void TrafficLight::changeTrafficLightHandler(string param)
@@ -78,7 +79,7 @@ void TrafficLight::emitColorSignal(string& param)
 }
 
 
-void TrafficLight::doTactHandler()
+void TrafficLight::doTactHandler(string param)
 {
 	Colors state = (Colors)this->getState();
 

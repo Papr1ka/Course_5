@@ -162,12 +162,12 @@ void RoadSection::onCarMoveHandler(string param)
 	if (abs(x) > this->length || abs(y) > this->length)
 	{
 		string command;
-		command = name + " the car left the road section";
+		//command = name + " the car left the road section";
 		setCell(x_prev, y_prev, nullptr);
-		this->emit_signal(
-			SIGNAL_D(RoadSection::printSignal),
-			command
-		);
+		//this->emit_signal(
+		//	SIGNAL_D(RoadSection::printSignal),
+		//	command
+		//);
 		this->deleteSub(name);
 	}
 	else

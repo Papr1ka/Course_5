@@ -56,6 +56,17 @@ void InputObject::readHandler()
 		break;
 	case 3:
 		this->inputCommand(line);
+		string command2, command3;
+		this->emit_signal(
+			SIGNAL_D(InputObject::doTactSignal),
+			command2,
+			this->searchRoot("TrafficLight")
+		);
+		this->emit_signal(
+			SIGNAL_D(InputObject::doTactSignal),
+			command3,
+			this->searchRoot("RoadSection")
+		);
 		break;
 	}
 }
@@ -169,6 +180,14 @@ void InputObject::inputCommand(string line)
 					car
 				);
 			}
+			else
+			{
+				command = other + " the car left the road section";
+				this->emit_signal(
+					SIGNAL_D(InputObject::printSignal),
+					command
+				);
+			}
 		}
 		else if (command == "Display")
 		{
@@ -177,15 +196,4 @@ void InputObject::inputCommand(string line)
 			this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), command2);
 		}
 	}
-	string command2, command3;
-	this->emit_signal(
-		SIGNAL_D(InputObject::doTactSignal),
-		command2,
-		this->searchRoot("TrafficLight")
-	);
-	this->emit_signal(
-		SIGNAL_D(InputObject::doTactSignal),
-		command3,
-		this->searchRoot("RoadSection")
-	);
 }

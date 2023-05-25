@@ -24,7 +24,6 @@ public:
 public:
 	Car(int x, int y, TreeBase* p_head_object, string s_name);
 	void insertNew();
-	void emitCarFrontFreeHandler(string param);
 	void moveHandler(string param);
 
 	void printCarCordsSignal(string& param);

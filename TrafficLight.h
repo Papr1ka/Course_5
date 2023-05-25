@@ -4,7 +4,7 @@
 
 class TrafficLight : public TreeBase
 {
-	//Светофор
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 public:
 	enum Colors
 	{
@@ -14,8 +14,8 @@ public:
 		Yellow2
 	};
 private:
-	//Цвет для горизонтальных полос
-	//Состояния: 1 -> зелёный, 2 -> жёлтый после зелёного, 3 -> красный, 4 -> жёлтый после красного
+	//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 1 -> пїЅпїЅпїЅпїЅпїЅпїЅ, 2 -> пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 3 -> пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 4 -> пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	int ticksGreen;
 	int ticksRed;
 	int ticks;
@@ -27,7 +27,7 @@ public:
 	void printColorSignal(string& param);
 	void emitColorSignal(string& param);
 
-	void doTactHandler();
+	void doTactHandler(string param);
 };
 
 #endif // !TRAFFIC_LIGHT_H
