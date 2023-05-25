@@ -61,6 +61,12 @@ void IntersectionSystem::build_tree_objects()
 	);
 
 	this->inputObject->set_connect(
+		SIGNAL_D(InputObject::printSignalNoEndl),
+		this->get_sub_object("DisplayScreen"),
+		HANDLER_D(DisplayScreen::printHandlerNoEndl)
+	);
+
+	this->inputObject->set_connect(
 		SIGNAL_D(InputObject::printSignal),
 		buffer->get_sub_object("TrafficLight"),
 		HANDLER_D(TrafficLight::changeTrafficLightHandler)

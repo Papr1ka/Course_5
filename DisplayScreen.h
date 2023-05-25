@@ -9,6 +9,7 @@ public:
 	DisplayScreen(TreeBase* p_head_object, string s_name = "DisplayScreen");
 
 	void printHandler(string param);
+	void printHandlerNoEndl(string param);
 };
 
 #endif // !DISPLAY_SCREEN_H

@@ -6,3 +6,8 @@ void DisplayScreen::printHandler(string param)
 {
 	cout << param << endl;
 }
+
+void DisplayScreen::printHandlerNoEndl(string param)
+{
+	cout << param;
+}

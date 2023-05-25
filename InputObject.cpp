@@ -71,6 +71,9 @@ void InputObject::inputCommand(string line)
 	if (command == "SHOWTREE")
 	{
 		this->get_head()->printTreeReady();
+		this->setState(++state);
+		this->getByPath("/")->setState(state);
+		return;
 	}
 	else
 	{
@@ -151,6 +154,8 @@ void InputObject::printCarCordsSignal(string& param) {}
 
 void InputObject::printSignal(string& param) {}
 
+void InputObject::printSignalNoEndl(string& param) {}
+
 void InputObject::printColorSignal(string& param) {}
 
 void InputObject::printRoadSignal(string& param) {}
@@ -163,10 +168,26 @@ void InputObject::readHandler()
 	getline(cin, line);
 
 	int state = this->getState();
-	if (line == "End of cars" || line == "Turn off the system")
+	if (line == "End of cars")
 	{
+		string command = "Ready to work";
 		this->setState(++state);
 		this->getByPath("/")->setState(state);
+		this->emit_signal(
+			SIGNAL_D(InputObject::printSignal),
+			command
+		);
+		return;
+	}
+	else if (line == "Turn off the system")
+	{
+		string command = "Turn off the system";
+		this->setState(++state);
+		this->getByPath("/")->setState(state);
+		this->emit_signal(
+			SIGNAL_D(InputObject::printSignalNoEndl),
+			command
+		);
 		return;
 	}
 

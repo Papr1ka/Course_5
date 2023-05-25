@@ -18,7 +18,8 @@ public:
 
 	void setRoadSizeSignal(string& param);
 	void printCarCordsSignal(string& param);
-	void printSignal(string& param); 
+	void printSignal(string& param);
+	void printSignalNoEndl(string& param);
 	void printColorSignal(string& param);
 	void printRoadSignal(string& param);
 	void doTactSignal(string& param);
