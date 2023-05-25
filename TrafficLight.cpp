@@ -8,6 +8,33 @@ TrafficLight::TrafficLight(TreeBase* p_head_object, string s_name, Colors color,
 	this->ticks = -1;
 }
 
+void TrafficLight::printColorSignal(string& param)
+{
+	Colors state = (Colors)this->getState();
+	param = "Traffic light color is ";
+
+	switch (state)
+	{
+	case TrafficLight::Green:
+		param += "green";
+		break;
+	case TrafficLight::Red:
+		param += "red";
+		break;
+	case TrafficLight::Yellow:
+		param += "yellow";
+		break;
+	case TrafficLight::Yellow2:
+		param += "yellow";
+		break;
+	}
+}
+
+void TrafficLight::emitColorSignal(string& param)
+{
+	param = to_string(this->getState());
+}
+
 void TrafficLight::changeTrafficLightHandler(string param)
 {
 	stringstream query;
@@ -41,29 +68,6 @@ void TrafficLight::printColorHandler(string param)
 	);
 }
 
-void TrafficLight::printColorSignal(string& param)
-{
-	Colors state = (Colors) this->getState();
-	param = "Traffic light color is ";
-
-	switch (state)
-	{
-	case TrafficLight::Green:
-		param += "green";
-		break;
-	case TrafficLight::Red:
-		param += "red";
-		break;
-	case TrafficLight::Yellow:
-		param += "yellow";
-		break;
-	case TrafficLight::Yellow2:
-		param += "yellow";
-		break;
-	}
-}
-
-
 void TrafficLight::getColorHandler(string param)
 {
 	string command;
@@ -72,12 +76,6 @@ void TrafficLight::getColorHandler(string param)
 		command
 	);
 }
-
-void TrafficLight::emitColorSignal(string& param)
-{
-	param = to_string(this->getState());
-}
-
 
 void TrafficLight::doTactHandler(string param)
 {

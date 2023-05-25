@@ -25,6 +25,7 @@ protected:
 	int state;
 public:
 	vector<TreeBase*> p_sub_objects;
+
 	typedef void (TreeBase ::* TYPE_SIGNAL) (string&);
 	typedef void (TreeBase ::* TYPE_HANDLER) (string);
 	typedef void (TreeBase ::* EMPTY_METHOD) ();

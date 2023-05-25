@@ -10,7 +10,6 @@ struct Cell
 	TreeBase* car;
 	Cell(int x, int y, TreeBase* car);
 	bool isEmpty();
-	void setCar(TreeBase* car);
 };
 
 #endif // !CELL_H

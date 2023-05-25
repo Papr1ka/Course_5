@@ -7,7 +7,6 @@
 
 class Car : public TreeBase
 {
-	//Машина
 public:
 	enum Directions
 	{
@@ -17,19 +16,20 @@ public:
 		Bottom,
 	};
 public:
-	int x; //горизонтальная, слева направо
-	int y; //вертикальная, сверху вниз
+	int x; //horizontal, left to right
+	int y; //vertical, bottom to up
 	Directions direction;
 
 public:
 	Car(int x, int y, TreeBase* p_head_object, string s_name);
 	void insertNew();
-	void moveHandler(string param);
 
 	void printCarCordsSignal(string& param);
 	void CallMoveIfFrontIsFreeSignal(string& param);
-	void printCarCordsHandler(string param);
 	void onMoveSignal(string& param);
+
+	void printCarCordsHandler(string param);
+	void moveHandler(string param);
 	void doTactHandler(string param);
 };
 

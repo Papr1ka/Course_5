@@ -11,18 +11,19 @@ class InputObject : public TreeBase
 public:
 	InputObject(TreeBase* p_head_object, string s_name = "InputObject");
 
-	void readHandler();
 	void inputRoadLength(string line);
 	void inputCar(string line);
 	void inputCommand(string line);
+	void tact();
 
 	void setRoadSizeSignal(string& param);
 	void printCarCordsSignal(string& param);
 	void printSignal(string& param); 
 	void printColorSignal(string& param);
 	void printRoadSignal(string& param);
-
 	void doTactSignal(string& param);
+
+	void readHandler();
 };
 
 #endif // !INPUT_OBJECT_H

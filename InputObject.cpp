@@ -1,75 +1,6 @@
 #include "InputObject.h"
 
-void InputObject::setRoadSizeSignal(string& param)
-{
-}
-
-void InputObject::printCarCordsSignal(string& param)
-{
-
-}
-
-void InputObject::printSignal(string& param)
-{
-
-}
-
-void InputObject::printColorSignal(string& param)
-{
-	
-}
-
-void InputObject::printRoadSignal(string& param)
-{
-
-}
-
-InputObject::InputObject(TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name)
-{
-}
-
-void InputObject::doTactSignal(string& param)
-{
-	
-}
-
-void InputObject::readHandler()
-{
-	string line;
-	getline(cin, line);
-
-	int state = this->getState();
-	if (line == "End of cars" || line == "Turn off the system")
-	{
-		this->setState(++state);
-		this->getByPath("/")->setState(state);
-		return;
-	}
-
-	switch (state)
-	{
-	case 1:
-		this->inputRoadLength(line);
-		break;
-	case 2:
-		this->inputCar(line);
-		break;
-	case 3:
-		this->inputCommand(line);
-		string command2, command3;
-		this->emit_signal(
-			SIGNAL_D(InputObject::doTactSignal),
-			command2,
-			this->searchRoot("TrafficLight")
-		);
-		this->emit_signal(
-			SIGNAL_D(InputObject::doTactSignal),
-			command3,
-			this->searchRoot("RoadSection")
-		);
-		break;
-	}
-}
+InputObject::InputObject(TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name) {}
 
 void InputObject::inputRoadLength(string line)
 {
@@ -87,7 +18,8 @@ void InputObject::inputCar(string line)
 
 	query << line;
 	query >> carNumber >> x >> y;
-	Car* obj = new Car(x, y, this->searchRoot("RoadSection"), carNumber);
+	Car* obj = RoadSection::createCarFactory(x, y, carNumber, this->get_head());
+
 	this->set_connect(
 		SIGNAL_D(InputObject::printCarCordsSignal),
 		obj,
@@ -195,5 +127,60 @@ void InputObject::inputCommand(string line)
 			this->emit_signal(SIGNAL_D(InputObject::printColorSignal), command);
 			this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), command2);
 		}
+	}
+}
+
+void InputObject::tact()
+{
+	string command2, command3;
+	this->emit_signal(
+		SIGNAL_D(InputObject::doTactSignal),
+		command2,
+		this->searchRoot("TrafficLightController")
+	);
+	this->emit_signal(
+		SIGNAL_D(InputObject::doTactSignal),
+		command3,
+		this->searchRoot("RoadSection")
+	);
+}
+
+void InputObject::setRoadSizeSignal(string& param) {}
+
+void InputObject::printCarCordsSignal(string& param) {}
+
+void InputObject::printSignal(string& param) {}
+
+void InputObject::printColorSignal(string& param) {}
+
+void InputObject::printRoadSignal(string& param) {}
+
+void InputObject::doTactSignal(string& param) {}
+
+void InputObject::readHandler()
+{
+	string line;
+	getline(cin, line);
+
+	int state = this->getState();
+	if (line == "End of cars" || line == "Turn off the system")
+	{
+		this->setState(++state);
+		this->getByPath("/")->setState(state);
+		return;
+	}
+
+	switch (state)
+	{
+	case 1:
+		this->inputRoadLength(line);
+		break;
+	case 2:
+		this->inputCar(line);
+		break;
+	case 3:
+		this->inputCommand(line);
+		this->tact();
+		break;
 	}
 }

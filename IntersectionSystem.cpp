@@ -6,11 +6,6 @@ IntersectionSystem::IntersectionSystem(TreeBase* p_head_object, string s_name) :
 	this->inputObject = nullptr;
 }
 
-void IntersectionSystem::callInputSignal(string& param)
-{
-	
-}
-
 void IntersectionSystem::build_tree_objects()
 {
 	TreeBase* buffer;
@@ -90,6 +85,12 @@ void IntersectionSystem::build_tree_objects()
 
 	this->get_sub_object("InputObject")->set_connect(
 		SIGNAL_D(InputObject::doTactSignal),
+		buffer,
+		HANDLER_D(TrafficLightController::doTactHandler)
+	);
+
+	buffer->set_connect(
+		SIGNAL_D(TrafficLightController::doTactSignal),
 		buffer->get_sub_object("TrafficLight"),
 		HANDLER_D(TrafficLight::doTactHandler)
 	);
@@ -116,3 +117,5 @@ int IntersectionSystem::exec_app()
 	}
 	return 0;
 }
+
+void IntersectionSystem::callInputSignal(string& param) {}

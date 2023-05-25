@@ -33,6 +33,61 @@ RoadSection::~RoadSection()
 	}
 }
 
+Cell* RoadSection::getCell(int x, int y)
+{
+	Cell* cell;
+	int size = this->cells.size();
+	for (int i = 0; i < size; i++)
+	{
+		cell = this->cells[i];
+		if (cell->x == x && cell->y == y)
+		{
+			return cell;
+		}
+	}
+	return nullptr;
+}
+
+void RoadSection::setCell(int x, int y, TreeBase* obj)
+{
+	Cell* cell;
+	int size = this->cells.size();
+	for (int i = 0; i < size; i++)
+	{
+		cell = this->cells[i];
+		if (cell->x == x && cell->y == y)
+		{
+			cell->car = obj;
+		}
+	}
+}
+
+Car* RoadSection::createCarFactory(int x, int y, string name, TreeBase* object)
+{
+	RoadSection* obj = static_cast<RoadSection*> (object->searchRoot("RoadSection"));
+
+	if (obj != nullptr)
+	{
+		Car* car = new Car(x, y, obj, name);
+		obj->setCell(x, y, car);
+		return car;
+	}
+	return nullptr;
+}
+
+void RoadSection::printCarCordsSignal(string& param) {}
+
+void RoadSection::doTactSignal(string& param) {}
+
+void RoadSection::emitCarFontStateAndColorSignal(string& param)
+{
+	param = to_string(this->currentColor);
+}
+
+void RoadSection::getColorSignal(string& param) {}
+
+void RoadSection::printSignal(string& param) {}
+
 void RoadSection::setLengthHandler(string length)
 {
 	this->length = stoi(length);
@@ -53,16 +108,6 @@ void RoadSection::printRoadHandler(string param)
 	}
 }
 
-void RoadSection::printCarCordsSignal(string& param)
-{
-
-}
-
-void RoadSection::doTactSignal(string& param)
-{
-
-}
-
 void RoadSection::doTactHandler(string param)
 {
 	//вызвать метод move у машин
@@ -76,16 +121,6 @@ void RoadSection::doTactHandler(string param)
 		SIGNAL_D(RoadSection::doTactSignal),
 		command2
 	);
-}
-
-void RoadSection::emitCarFontStateAndColorSignal(string& param)
-{
-	param = to_string(this->currentColor);
-}
-
-void RoadSection::getColorSignal(string& param)
-{
-
 }
 
 void RoadSection::emitColorHandler(string param)
@@ -115,40 +150,6 @@ void RoadSection::CallMoveIfFrontIsFreeHandler(string param)
 	}
 }
 
-void RoadSection::setCell(int x, int y, TreeBase* obj)
-{
-	Cell* cell;
-	int size = this->cells.size();
-	for (int i = 0; i < size; i++)
-	{
-		cell = this->cells[i];
-		if (cell->x == x && cell->y == y)
-		{
-			cell->car = obj;
-		}
-	}
-}
-
-Cell* RoadSection::getCell(int x, int y)
-{
-	Cell* cell;
-	int size = this->cells.size();
-	for (int i = 0; i < size; i++)
-	{
-		cell = this->cells[i];
-		if (cell->x == x && cell->y == y)
-		{
-			return cell;
-		}
-	}
-	return nullptr;
-}
-
-void RoadSection::printSignal(string& param)
-{
-	
-}
-
 void RoadSection::onCarMoveHandler(string param)
 {
 	stringstream query;
@@ -162,12 +163,7 @@ void RoadSection::onCarMoveHandler(string param)
 	if (abs(x) > this->length || abs(y) > this->length)
 	{
 		string command;
-		//command = name + " the car left the road section";
 		setCell(x_prev, y_prev, nullptr);
-		//this->emit_signal(
-		//	SIGNAL_D(RoadSection::printSignal),
-		//	command
-		//);
 		this->deleteSub(name);
 	}
 	else

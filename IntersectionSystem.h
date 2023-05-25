@@ -16,6 +16,7 @@ private:
 	TreeBase* inputObject;
 public:
 	IntersectionSystem(TreeBase* p_head_object, string s_name = "IntersectionSystem");
+
 	void build_tree_objects();
 	int exec_app();
 

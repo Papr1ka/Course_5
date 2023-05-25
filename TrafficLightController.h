@@ -13,6 +13,9 @@ public:
 	TrafficLightController(TreeBase* p_head_object, string s_name = "TrafficLightController");
 
 	void changeTrafficLightSignal(string& param);
+	void doTactSignal(string& param);
+
+	void doTactHandler(string param);
 };
 
 #endif // !TRAFFIC_LIGHT_CONTROLLER_H

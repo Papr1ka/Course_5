@@ -1,54 +1,10 @@
 #include "TreeBase.h"
 
-void test(TreeBase* obj)
-{
-	obj->insertNew();
-}
-
 TreeBase::TreeBase(TreeBase* p_head_object, string s_name, EMPTY_METHOD method)
 {
 	this->p_head_object = p_head_object;
 	this->s_name = s_name;
 	(this->*method) ();
-}
-
-void TreeBase::insertNew()
-{
-	if (p_head_object != nullptr)
-	{
-		p_head_object->p_sub_objects.push_back(this);
-	}
-}
-
-void TreeBase::replaceByName()
-{
-	TreeBase* head = this->p_head_object;
-	if (head == nullptr)
-	{
-		return;
-	}
-	auto end = head->p_sub_objects.cend();
-
-	bool pasted = false;
-
-	for (auto iter = head->p_sub_objects.cbegin(); iter != end; iter++)
-	{
-		if ((*iter)->s_name > this->s_name)
-		{
-			head->p_sub_objects.insert(iter, this);
-			pasted = true;
-			break;
-		}
-	}
-	if (pasted)
-	{
-		head->p_sub_objects.erase(--head->p_sub_objects.cend());
-	}
-}
-
-TreeBase* TreeBase::get_head()
-{
-	return this->p_head_object;
 }
 
 TreeBase::~TreeBase()
@@ -59,35 +15,6 @@ TreeBase::~TreeBase()
 		delete this->p_sub_objects[i];
 	}
 	this->deleteConnects();
-}
-
-TreeBase* TreeBase::get_sub_object(string s_name)
-{
-	int size = this->p_sub_objects.size();
-	for (int i = 0; i < size; i++)
-	{
-		if (this->p_sub_objects[i]->get_name() == s_name)
-		{
-			return p_sub_objects[i];
-		}
-	}
-	return nullptr;
-}
-
-string TreeBase::getAbsoluteCoordinate()
-{
-	string cord = "";
-	TreeBase* obj = this;
-	while (obj->get_head() != nullptr)
-	{
-		cord = "/" + obj->get_name() + cord;
-		obj = obj->get_head();
-	}
-	if (cord.empty())
-	{
-		cord = "/";
-	}
-	return cord;
 }
 
 bool TreeBase::set_name(string s_new_name)
@@ -105,30 +32,71 @@ bool TreeBase::set_name(string s_new_name)
 	return false;
 }
 
-void TreeBase::print_tree(string str)
+bool TreeBase::deleteSub(string name)
 {
-	cout << endl << str << this->get_name();
 	int size = this->p_sub_objects.size();
 	for (int i = 0; i < size; i++)
 	{
-		this->p_sub_objects[i]->print_tree(str + "    ");
+		if (this->p_sub_objects[i]->get_name() == name)
+		{
+			delete this->p_sub_objects[i];
+			this->p_sub_objects.erase(this->p_sub_objects.begin() + i);
+			return true;
+		}
 	}
+	return false;
 }
 
-void TreeBase::printTreeReady(string str)
+bool TreeBase::reOrder(TreeBase* new_head)
 {
-	cout << endl << str << this->get_name() << " ";
-	cout << (this->state != 0 ? "is ready" : "is not ready");
+	if (new_head->p_head_object == nullptr || new_head == nullptr || new_head->get_sub_object(this->s_name) != nullptr)
+	{
+		return false;
+	}
+
+	TreeBase* obj = new_head;
+
+	while (obj != nullptr)
+	{
+		if (obj == this)
+		{
+			return false;
+		}
+		obj = obj->get_head();
+	}
+	obj = this->p_head_object;
+	int size = obj->p_sub_objects.size();
+	for (int i = 0; i < size; i++)
+	{
+		if (obj->p_sub_objects[i]->get_name() == this->s_name)
+		{
+			obj->p_sub_objects.erase(obj->p_sub_objects.begin() + i);
+			break;
+		}
+	}
+
+	this->p_head_object = new_head;
+	new_head->p_sub_objects.push_back(this);
+	return true;
+}
+
+TreeBase* TreeBase::get_head()
+{
+	return this->p_head_object;
+}
+
+
+TreeBase* TreeBase::get_sub_object(string s_name)
+{
 	int size = this->p_sub_objects.size();
 	for (int i = 0; i < size; i++)
 	{
-		this->p_sub_objects[i]->printTreeReady(str + "    ");
+		if (this->p_sub_objects[i]->get_name() == s_name)
+		{
+			return p_sub_objects[i];
+		}
 	}
-}
-
-string TreeBase::get_name()
-{
-	return this->s_name;
+	return nullptr;
 }
 
 TreeBase* TreeBase::searchSub(string name)
@@ -177,120 +145,6 @@ TreeBase* TreeBase::searchRoot(string name)
 		}
 	}
 	return head->searchSub(name);
-}
-
-void TreeBase::setState(int new_state)
-{
-	if (new_state != 0)
-	{
-		if (this->p_head_object != nullptr)
-		{
-			if (this->p_head_object->getState() != 0)
-			{
-				this->state = new_state;
-			}
-		}
-		else
-		{
-			this->state = new_state;
-		}
-	}
-	else
-	{
-		this->state = 0;
-		int size = this->p_sub_objects.size();
-		for (int i = 0; i < size; i++)
-		{
-			this->p_sub_objects[i]->setState(state);
-		}
-	}
-}
-
-int TreeBase::getState()
-{
-	return this->state;
-}
-
-bool TreeBase::deleteSub(string name)
-{
-	int size = this->p_sub_objects.size();
-	for (int i = 0; i < size; i++)
-	{
-		if (this->p_sub_objects[i]->get_name() == name)
-		{
-			delete this->p_sub_objects[i];
-			this->p_sub_objects.erase(this->p_sub_objects.begin() + i);
-			return true;
-		}
-	}
-	return false;
-}
-
-void TreeBase::deleteConnects()
-{
-	TreeBase* rootObject = this;
-	while (rootObject->get_head() != nullptr) {
-		rootObject = rootObject->get_head();
-	}
-
-	queue<TreeBase*> queue;
-	queue.push(rootObject);
-	while (!queue.empty())
-	{
-		TreeBase* obj = queue.front();
-		queue.pop();
-
-		int size = obj->connects.size();
-		for (int i = 0; i < size; i++)
-		{
-		
-			if (obj->connects[i]->p_object == this)
-			{
-				delete obj->connects[i];
-				obj->connects.erase(obj->connects.begin() + i);
-				i--;
-				size--;
-			}
-		}
-		size = obj->p_sub_objects.size();
-		for (int i = 0; i < size; i++)
-		{
-			queue.push(obj->p_sub_objects[i]);
-		}
-	}
-}
-
-bool TreeBase::reOrder(TreeBase* new_head)
-{
-	if (new_head->p_head_object == nullptr || new_head == nullptr || new_head->get_sub_object(this->s_name) != nullptr)
-	{
-		return false;
-	}
-
-	TreeBase* obj = new_head;
-
-	while (obj != nullptr)
-	{
-		if (obj == this)
-		{
-			return false;
-		}
-		obj = obj->get_head();
-	}
-	obj = this->p_head_object;
-	int size = obj->p_sub_objects.size();
-	for (int i = 0; i < size; i++)
-	{
-		if (obj->p_sub_objects[i]->get_name() == this->s_name)
-		{
-			obj->p_sub_objects.erase(obj->p_sub_objects.begin() + i);
-			break;
-		}
-	}
-
-	this->p_head_object = new_head;
-	new_head->p_sub_objects.push_back(this);
-	return true;
 }
 
 TreeBase* TreeBase::getByPath(string name)
@@ -354,6 +208,148 @@ TreeBase* TreeBase::getByPath(string name)
 		name = name.substr(right, name.size());
 	}
 	return obj;
+}
+
+string TreeBase::getAbsoluteCoordinate()
+{
+	string cord = "";
+	TreeBase* obj = this;
+	while (obj->get_head() != nullptr)
+	{
+		cord = "/" + obj->get_name() + cord;
+		obj = obj->get_head();
+	}
+	if (cord.empty())
+	{
+		cord = "/";
+	}
+	return cord;
+}
+
+string TreeBase::get_name()
+{
+	return this->s_name;
+}
+
+int TreeBase::getState()
+{
+	return this->state;
+}
+
+void TreeBase::insertNew()
+{
+	if (p_head_object != nullptr)
+	{
+		p_head_object->p_sub_objects.push_back(this);
+	}
+}
+
+void TreeBase::replaceByName()
+{
+	TreeBase* head = this->p_head_object;
+	if (head == nullptr)
+	{
+		return;
+	}
+	auto end = head->p_sub_objects.cend();
+
+	bool pasted = false;
+
+	for (auto iter = head->p_sub_objects.cbegin(); iter != end; iter++)
+	{
+		if ((*iter)->s_name > this->s_name)
+		{
+			head->p_sub_objects.insert(iter, this);
+			pasted = true;
+			break;
+		}
+	}
+	if (pasted)
+	{
+		head->p_sub_objects.erase(--head->p_sub_objects.cend());
+	}
+}
+
+void TreeBase::print_tree(string str)
+{
+	cout << endl << str << this->get_name();
+	int size = this->p_sub_objects.size();
+	for (int i = 0; i < size; i++)
+	{
+		this->p_sub_objects[i]->print_tree(str + "    ");
+	}
+}
+
+void TreeBase::printTreeReady(string str)
+{
+	cout << endl << str << this->get_name() << " ";
+	cout << (this->state != 0 ? "is ready" : "is not ready");
+	int size = this->p_sub_objects.size();
+	for (int i = 0; i < size; i++)
+	{
+		this->p_sub_objects[i]->printTreeReady(str + "    ");
+	}
+}
+
+void TreeBase::setState(int new_state)
+{
+	if (new_state != 0)
+	{
+		if (this->p_head_object != nullptr)
+		{
+			if (this->p_head_object->getState() != 0)
+			{
+				this->state = new_state;
+			}
+		}
+		else
+		{
+			this->state = new_state;
+		}
+	}
+	else
+	{
+		this->state = 0;
+		int size = this->p_sub_objects.size();
+		for (int i = 0; i < size; i++)
+		{
+			this->p_sub_objects[i]->setState(state);
+		}
+	}
+}
+
+void TreeBase::deleteConnects()
+{
+	TreeBase* rootObject = this;
+	while (rootObject->get_head() != nullptr) {
+		rootObject = rootObject->get_head();
+	}
+
+	queue<TreeBase*> queue;
+	queue.push(rootObject);
+	while (!queue.empty())
+	{
+		TreeBase* obj = queue.front();
+		queue.pop();
+
+		int size = obj->connects.size();
+		for (int i = 0; i < size; i++)
+		{
+		
+			if (obj->connects[i]->p_object == this)
+			{
+				delete obj->connects[i];
+				obj->connects.erase(obj->connects.begin() + i);
+				i--;
+				size--;
+			}
+		}
+		size = obj->p_sub_objects.size();
+		for (int i = 0; i < size; i++)
+		{
+			queue.push(obj->p_sub_objects[i]);
+		}
+	}
 }
 
 void TreeBase::set_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HANDLER p_object_handler)
