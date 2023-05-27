@@ -46,12 +46,12 @@ void InputObject::inputCar(string line)
 		HANDLER_D(RoadSection::onCarMoveHandler)
 	);
 	obj->set_connect(
-		SIGNAL_D(Car::CallMoveIfFrontIsFreeSignal),
+		SIGNAL_D(Car::callMoveIfFrontIsFreeSignal),
 		this->searchRoot("RoadSection"),
-		HANDLER_D(RoadSection::CallMoveIfFrontIsFreeHandler)
+		HANDLER_D(RoadSection::callMoveIfFrontIsFreeHandler)
 	);
 	this->searchRoot("RoadSection")->set_connect(
-		SIGNAL_D(RoadSection::emitCarFontStateAndColorSignal),
+		SIGNAL_D(RoadSection::emitCarFrontStateAndColorSignal),
 		obj,
 		HANDLER_D(Car::moveHandler)
 	);
@@ -105,7 +105,6 @@ void InputObject::inputCommand(string line)
 		}
 		else if (command == "Car")
 		{
-			string command;
 			TreeBase* car = this->searchRoot("RoadSection")->searchSub(other);
 			if (car != nullptr)
 			{
@@ -117,17 +116,17 @@ void InputObject::inputCommand(string line)
 			}
 			else
 			{
-				command = other + " the car left the road section";
+				commandToSend = other + " the car left the road section";
 				this->emit_signal(
 					SIGNAL_D(InputObject::printSignal),
-					command
+					commandToSend
 				);
 			}
 		}
 		else if (command == "Display")
 		{
-			string command, command2;
-			this->emit_signal(SIGNAL_D(InputObject::printColorSignal), command);
+			string command2;
+			this->emit_signal(SIGNAL_D(InputObject::printColorSignal), commandToSend);
 			this->emit_signal(SIGNAL_D(InputObject::printRoadSignal), command2);
 		}
 	}
@@ -162,7 +161,7 @@ void InputObject::printRoadSignal(string& param) {}
 
 void InputObject::doTactSignal(string& param) {}
 
-void InputObject::readHandler()
+void InputObject::readHandler(string param)
 {
 	string line;
 	getline(cin, line);

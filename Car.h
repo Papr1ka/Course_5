@@ -25,7 +25,7 @@ public:
 	void insertNew();
 
 	void printCarCordsSignal(string& param);
-	void CallMoveIfFrontIsFreeSignal(string& param);
+	void callMoveIfFrontIsFreeSignal(string& param);
 	void onMoveSignal(string& param);
 
 	void printCarCordsHandler(string param);

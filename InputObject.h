@@ -24,7 +24,7 @@ public:
 	void printRoadSignal(string& param);
 	void doTactSignal(string& param);
 
-	void readHandler();
+	void readHandler(string param);
 };
 
 #endif // !INPUT_OBJECT_H

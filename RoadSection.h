@@ -27,14 +27,14 @@ public:
 	void printCarCordsSignal(string& param);
 	void printSignal(string& param);
 	void doTactSignal(string& param);
-	void emitCarFontStateAndColorSignal(string& param);
+	void emitCarFrontStateAndColorSignal(string& param);
 	void getColorSignal(string& param);
 
 	void emitColorHandler(string param);
-	void setLengthHandler(string length);
+	void setLengthHandler(string param);
 	void doTactHandler(string param);
 	void printRoadHandler(string param);
-	void CallMoveIfFrontIsFreeHandler(string param);
+	void callMoveIfFrontIsFreeHandler(string param);
 	void onCarMoveHandler(string param);
 };
 

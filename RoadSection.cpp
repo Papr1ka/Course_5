@@ -58,6 +58,7 @@ void RoadSection::setCell(int x, int y, TreeBase* obj)
 		if (cell->x == x && cell->y == y)
 		{
 			cell->car = obj;
+			break;
 		}
 	}
 }
@@ -79,7 +80,7 @@ void RoadSection::printCarCordsSignal(string& param) {}
 
 void RoadSection::doTactSignal(string& param) {}
 
-void RoadSection::emitCarFontStateAndColorSignal(string& param)
+void RoadSection::emitCarFrontStateAndColorSignal(string& param)
 {
 	param = to_string(this->currentColor);
 }
@@ -88,9 +89,9 @@ void RoadSection::getColorSignal(string& param) {}
 
 void RoadSection::printSignal(string& param) {}
 
-void RoadSection::setLengthHandler(string length)
+void RoadSection::setLengthHandler(string param)
 {
-	this->length = stoi(length);
+	this->length = stoi(param);
 }
 
 void RoadSection::printRoadHandler(string param)
@@ -111,12 +112,11 @@ void RoadSection::printRoadHandler(string param)
 void RoadSection::doTactHandler(string param)
 {
 	//вызвать метод move у машин
-	string command;
+	string command, command2;
 	this->emit_signal(
 		SIGNAL_D(RoadSection::getColorSignal),
 		command
 	);
-	string command2;
 	this->emit_signal(
 		SIGNAL_D(RoadSection::doTactSignal),
 		command2
@@ -128,22 +128,20 @@ void RoadSection::emitColorHandler(string param)
 	this->currentColor = stoi(param);
 }
 
-void RoadSection::CallMoveIfFrontIsFreeHandler(string param)
+void RoadSection::callMoveIfFrontIsFreeHandler(string param)
 {
 	stringstream query;
-	query << param;
-
-	string name;
+	string name, command;
 	int x, y;
-
+	query << param;
 	query >> name >> x >> y;
+
 	Cell* cell = this->getCell(x, y);
-	string command;
 
 	if (cell == nullptr || cell->isEmpty())
 	{
 		this->emit_signal(
-			SIGNAL_D(RoadSection::emitCarFontStateAndColorSignal),
+			SIGNAL_D(RoadSection::emitCarFrontStateAndColorSignal),
 			command,
 			this->get_sub_object(name)
 		);
@@ -153,22 +151,18 @@ void RoadSection::CallMoveIfFrontIsFreeHandler(string param)
 void RoadSection::onCarMoveHandler(string param)
 {
 	stringstream query;
-	query << param;
-	int x_prev, y_prev, x, y;
 	string name;
+	int x_prev, y_prev, x, y;
+	query << param;
 	query >> name >> x_prev >> y_prev >> x >> y;
-
-	TreeBase* car = this->get_sub_object(name);
+	setCell(x_prev, y_prev, nullptr);
 
 	if (abs(x) > this->length || abs(y) > this->length)
 	{
-		string command;
-		setCell(x_prev, y_prev, nullptr);
 		this->deleteSub(name);
 	}
 	else
 	{
-		setCell(x_prev, y_prev, nullptr);
-		setCell(x, y, car);
+		setCell(x, y, this->get_sub_object(name));
 	}
 }

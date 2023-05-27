@@ -72,11 +72,10 @@ void Car::printCarCordsSignal(string& param)
 	param = this->get_name() + " ( " + to_string(this->x) + ", " + to_string(this->y) + " )";
 }
 
-void Car::CallMoveIfFrontIsFreeSignal(string& param)
+void Car::callMoveIfFrontIsFreeSignal(string& param)
 {
 	Directions direction = (Directions)this->getState();
-	int new_x;
-	int new_y;
+	int new_x, new_y;
 	switch (direction)
 	{
 	case Car::Top:
@@ -208,7 +207,7 @@ void Car::doTactHandler(string param)
 {
 	string command;
 	this->emit_signal(
-		SIGNAL_D(Car::CallMoveIfFrontIsFreeSignal),
+		SIGNAL_D(Car::callMoveIfFrontIsFreeSignal),
 		command
 	);
 }

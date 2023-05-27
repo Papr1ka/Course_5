@@ -38,14 +38,14 @@ void TrafficLight::emitColorSignal(string& param)
 void TrafficLight::changeTrafficLightHandler(string param)
 {
 	stringstream query;
-	query << param;
 	int value;
 	Colors colorEdit;
 	int ticks;
 
+	query << param;
 	query >> value >> ticks;
 	colorEdit = (Colors) value;
-	if (ticks > 2)
+	if (ticks >= 2)
 	{
 		switch (colorEdit)
 		{
@@ -80,12 +80,10 @@ void TrafficLight::getColorHandler(string param)
 void TrafficLight::doTactHandler(string param)
 {
 	Colors state = (Colors)this->getState();
-
+	this->ticks += 1;
 	switch (state)
 	{
 	case TrafficLight::Green:
-
-		this->ticks += 1;
 		if (this->ticks >= this->ticksGreen)
 		{
 			this->ticks = 0;
@@ -93,7 +91,6 @@ void TrafficLight::doTactHandler(string param)
 		}
 		break;
 	case TrafficLight::Red:
-		this->ticks += 1;
 		if (this->ticks >= this->ticksRed)
 		{
 			this->ticks = 0;
@@ -101,7 +98,6 @@ void TrafficLight::doTactHandler(string param)
 		}
 		break;
 	case TrafficLight::Yellow:
-		this->ticks += 1;
 		if (this->ticks >= 2)
 		{
 			this->ticks = 0;
@@ -109,7 +105,6 @@ void TrafficLight::doTactHandler(string param)
 		}
 		break;
 	case TrafficLight::Yellow2:
-		this->ticks += 1;
 		if (this->ticks >= 2)
 		{
 			this->ticks = 0;
