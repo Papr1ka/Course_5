@@ -11,9 +11,6 @@
 class IntersectionSystem : public TreeBase
 {
 	//Система перекрёстка
-private:
-	int tickNumber;
-	TreeBase* inputObject;
 public:
 	IntersectionSystem(TreeBase* p_head_object, string s_name = "IntersectionSystem");
 

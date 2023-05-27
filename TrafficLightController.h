@@ -5,10 +5,6 @@
 class TrafficLightController : public TreeBase
 {
 	//Пульт управления светофором
-private:
-	int ticksGreen;
-	int ticksRed;
-	int ticks;
 public:
 	TrafficLightController(TreeBase* p_head_object, string s_name = "TrafficLightController");
 

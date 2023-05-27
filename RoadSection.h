@@ -13,7 +13,6 @@ class RoadSection : public TreeBase
 	//Длина участка дороги
 private:
 	int length;
-	TrafficLight::Colors color;
 	vector<Cell*> cells;
 	int currentColor;
 public:

@@ -1,19 +1,15 @@
 #include "IntersectionSystem.h"
 
-IntersectionSystem::IntersectionSystem(TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name)
-{
-	this->tickNumber = 0;
-	this->inputObject = nullptr;
-}
+IntersectionSystem::IntersectionSystem(TreeBase* p_head_object, string s_name) : TreeBase(p_head_object, s_name) {}
 
 void IntersectionSystem::build_tree_objects()
 {
 	TreeBase* buffer;
-	RoadSection* road;
-	this->inputObject = new InputObject(this);
+	TreeBase* inputObject;
+	inputObject = new InputObject(this);
 	buffer = new TrafficLightController(this);
 	new TrafficLight(buffer);
-	road = new RoadSection(this);
+	new RoadSection(this);
 	new DisplayScreen(this);
 
 	this->setSubTreeReady();
@@ -30,7 +26,7 @@ void IntersectionSystem::build_tree_objects()
 		HANDLER_D(RoadSection::setLengthHandler)
 	);
 
-	this->inputObject->set_connect(
+	inputObject->set_connect(
 		SIGNAL_D(InputObject::printColorSignal),
 		buffer->get_sub_object("TrafficLight"),
 		HANDLER_D(TrafficLight::printColorHandler)
@@ -54,25 +50,25 @@ void IntersectionSystem::build_tree_objects()
 		HANDLER_D(DisplayScreen::printHandler)
 	);
 
-	this->inputObject->set_connect(
+	inputObject->set_connect(
 		SIGNAL_D(InputObject::printSignal),
 		this->get_sub_object("DisplayScreen"),
 		HANDLER_D(DisplayScreen::printHandler)
 	);
 
-	this->inputObject->set_connect(
+	inputObject->set_connect(
 		SIGNAL_D(InputObject::printSignalNoEndl),
 		this->get_sub_object("DisplayScreen"),
 		HANDLER_D(DisplayScreen::printHandlerNoEndl)
 	);
 
-	this->inputObject->set_connect(
+	inputObject->set_connect(
 		SIGNAL_D(InputObject::printSignal),
 		buffer->get_sub_object("TrafficLight"),
 		HANDLER_D(TrafficLight::changeTrafficLightHandler)
 	);
 
-	this->inputObject->set_connect(
+	inputObject->set_connect(
 		SIGNAL_D(InputObject::printRoadSignal),
 		this->get_sub_object("RoadSection"),
 		HANDLER_D(RoadSection::printRoadHandler)

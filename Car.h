@@ -15,7 +15,7 @@ public:
 		Left,
 		Bottom,
 	};
-public:
+private:
 	int x; //horizontal, left to right
 	int y; //vertical, bottom to up
 	Directions direction;
