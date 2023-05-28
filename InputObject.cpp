@@ -110,7 +110,7 @@ void InputObject::inputCommand(string line)
 			{
 				this->emit_signal(
 					SIGNAL_D(InputObject::printCarCordsSignal),
-					command,
+					commandToSend,
 					car
 				);
 			}
