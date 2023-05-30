@@ -5,7 +5,7 @@ TrafficLight::TrafficLight(TreeBase* p_head_object, string s_name, Colors color,
 	this->setState(color);
 	this->ticksGreen = ticksGreen;
 	this->ticksRed = ticksRed;
-	this->ticks = -1;
+	this->ticks = 0;
 }
 
 void TrafficLight::printColorSignal(string& param)

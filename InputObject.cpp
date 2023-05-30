@@ -108,6 +108,7 @@ void InputObject::inputCommand(string line)
 			TreeBase* car = this->searchRoot("RoadSection")->searchSub(other);
 			if (car != nullptr)
 			{
+				commandToSend = "Car ";
 				this->emit_signal(
 					SIGNAL_D(InputObject::printCarCordsSignal),
 					commandToSend,

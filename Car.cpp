@@ -69,7 +69,7 @@ void Car::insertNew()
 
 void Car::printCarCordsSignal(string& param)
 {
-	param = this->get_name() + " ( " + to_string(this->x) + ", " + to_string(this->y) + " )";
+	param += this->get_name() + " ( " + to_string(this->x) + ", " + to_string(this->y) + " )";
 }
 
 void Car::callMoveIfFrontIsFreeSignal(string& param)
@@ -105,8 +105,7 @@ void Car::onMoveSignal(string& param)
 
 void Car::printCarCordsHandler(string param)
 {
-	string command;
-	this->emit_signal(SIGNAL_D(Car::printCarCordsSignal), command);
+	this->emit_signal(SIGNAL_D(Car::printCarCordsSignal), param);
 }
 
 void Car::moveHandler(string param)
