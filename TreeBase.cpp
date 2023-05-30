@@ -402,6 +402,7 @@ void TreeBase::delete_connect(TYPE_SIGNAL p_signal, TreeBase* p_object, TYPE_HAN
 		{
 			delete this->connects[i];
 			this->connects.erase(this->connects.begin() + i);
+			i--;
 		}
 	}
 }
