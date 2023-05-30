@@ -103,6 +103,12 @@ void IntersectionSystem::build_tree_objects()
 		HANDLER_D(RoadSection::doTactHandler)
 	);
 
+	this->get_sub_object("InputObject")->set_connect(
+		SIGNAL_D(InputObject::IncrementTrafficLightTicksSignal),
+		buffer->get_sub_object("TrafficLight"),
+		HANDLER_D(TrafficLight::IncrementTicks)
+	);
+
 	string command;
 	while (this->getState() == 1)
 	{

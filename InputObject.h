@@ -22,6 +22,7 @@ public:
 	void printSignalNoEndl(string& param);
 	void printColorSignal(string& param);
 	void printRoadSignal(string& param);
+	void IncrementTrafficLightTicksSignal(string& param);
 	void doTactSignal(string& param);
 
 	void readHandler(string param);

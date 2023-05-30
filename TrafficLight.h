@@ -29,6 +29,7 @@ public:
 	void printColorHandler(string param);
 	void getColorHandler(string param);
 	void doTactHandler(string param);
+	void IncrementTicks(string param);
 };
 
 #endif // !TRAFFIC_LIGHT_H
