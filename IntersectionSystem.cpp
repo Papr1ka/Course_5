@@ -104,9 +104,9 @@ void IntersectionSystem::build_tree_objects()
 	);
 
 	this->get_sub_object("InputObject")->set_connect(
-		SIGNAL_D(InputObject::IncrementTrafficLightTicksSignal),
+		SIGNAL_D(InputObject::incrementTrafficLightTicksSignal),
 		buffer->get_sub_object("TrafficLight"),
-		HANDLER_D(TrafficLight::IncrementTicks)
+		HANDLER_D(TrafficLight::incrementTicks)
 	);
 
 	string command;

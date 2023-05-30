@@ -113,7 +113,7 @@ void TrafficLight::doTactHandler(string param)
 	}
 }
 
-void TrafficLight::IncrementTicks(string param)
+void TrafficLight::incrementTicks(string param)
 {
 	this->ticks++;
 }

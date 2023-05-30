@@ -147,7 +147,7 @@ void InputObject::tact()
 		this->searchRoot("RoadSection")
 	);
 	this->emit_signal(
-		SIGNAL_D(InputObject::IncrementTrafficLightTicksSignal),
+		SIGNAL_D(InputObject::incrementTrafficLightTicksSignal),
 		command,
 		this->searchRoot("TrafficLight")
 	);
@@ -167,7 +167,7 @@ void InputObject::printRoadSignal(string& param) {}
 
 void InputObject::doTactSignal(string& param) {}
 
-void InputObject::IncrementTrafficLightTicksSignal(string& param) {}
+void InputObject::incrementTrafficLightTicksSignal(string& param) {}
 
 void InputObject::readHandler(string param)
 {
