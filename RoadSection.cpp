@@ -118,8 +118,12 @@ void RoadSection::doTactHandler(string param)
 		command
 	);
 
-	for (int i = this->length; i > 0; i--)
+	for (int i = this->length; i > -this->length; i--)
 	{
+		if (i == 0)
+		{
+			continue;
+		}
 		Cell* a = this->getCell(i, -1);
 		Cell* b = this->getCell(-i, 1);
 		Cell* c = this->getCell(-1, -i);
