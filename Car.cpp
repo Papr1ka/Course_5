@@ -81,20 +81,37 @@ void Car::callMoveIfFrontIsFreeSignal(string& param)
 	case Car::Top:
 		new_x = x;
 		new_y = y + 1;
+		if (new_y == 0)
+		{
+			new_y++;
+		}
 		break;
 	case Car::Right:
 		new_x = x + 1;
 		new_y = y;
+		if (new_x == 0)
+		{
+			new_x++;
+		}
 		break;
 	case Car::Left:
 		new_x = x - 1;
 		new_y = y;
+		if (new_x == 0)
+		{
+			new_x--;
+		}
 		break;
 	case Car::Bottom:
 		new_x = x;
 		new_y = y - 1;
+		if (new_y == 0)
+		{
+			new_y--;
+		}
 		break;
 	}
+
 	param = this->get_name() + " " + to_string(new_x) + " " + to_string(new_y);
 }
 

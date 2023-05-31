@@ -120,47 +120,47 @@ void RoadSection::doTactHandler(string param)
 
 	for (int i = this->length; i > -this->length; i--)
 	{
-		if (i == 0)
+		if (i == 0 || i == -1)
 		{
 			continue;
 		}
-		Cell* a = this->getCell(i, -1);
-		Cell* b = this->getCell(-i, 1);
-		Cell* c = this->getCell(-1, -i);
-		Cell* d = this->getCell(1, i);
-		if (a != nullptr && !a->isEmpty())
+		Cell a = *this->getCell(i, -1);
+		Cell b = *this->getCell(-i, 1);
+		Cell c = *this->getCell(-1, -i);
+		Cell d = *this->getCell(1, i);
+		if (!a.isEmpty())
 		{
 			this->emit_signal(
 				SIGNAL_D(RoadSection::doTactSignal),
 				command2,
-				a->car
+				a.car
 			);
 		}
 
-		if (b != nullptr && !b->isEmpty())
+		if (!b.isEmpty())
 		{
 			this->emit_signal(
 				SIGNAL_D(RoadSection::doTactSignal),
 				command2,
-				b->car
+				b.car
 			);
 		}
 
-		if (c != nullptr && !c->isEmpty())
+		if (!c.isEmpty())
 		{
 			this->emit_signal(
 				SIGNAL_D(RoadSection::doTactSignal),
 				command2,
-				c->car
+				c.car
 			);
 		}
 
-		if (d != nullptr && !d->isEmpty())
+		if (!d.isEmpty())
 		{
 			this->emit_signal(
 				SIGNAL_D(RoadSection::doTactSignal),
 				command2,
-				d->car
+				d.car
 			);
 		}
 	}
