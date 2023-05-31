@@ -111,16 +111,55 @@ void RoadSection::printRoadHandler(string param)
 
 void RoadSection::doTactHandler(string param)
 {
-	//вызвать метод move у машин
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ move пїЅ пїЅпїЅпїЅпїЅпїЅ
 	string command, command2;
 	this->emit_signal(
 		SIGNAL_D(RoadSection::getColorSignal),
 		command
 	);
-	this->emit_signal(
-		SIGNAL_D(RoadSection::doTactSignal),
-		command2
-	);
+
+	for (int i = this->length; i > 0; i--)
+	{
+		Cell* a = this->getCell(i, -1);
+		Cell* b = this->getCell(-i, 1);
+		Cell* c = this->getCell(-1, -i);
+		Cell* d = this->getCell(1, i);
+		if (a != nullptr && !a->isEmpty())
+		{
+			this->emit_signal(
+				SIGNAL_D(RoadSection::doTactSignal),
+				command2,
+				a->car
+			);
+		}
+
+		if (b != nullptr && !b->isEmpty())
+		{
+			this->emit_signal(
+				SIGNAL_D(RoadSection::doTactSignal),
+				command2,
+				b->car
+			);
+		}
+
+		if (c != nullptr && !c->isEmpty())
+		{
+			this->emit_signal(
+				SIGNAL_D(RoadSection::doTactSignal),
+				command2,
+				c->car
+			);
+		}
+
+		if (d != nullptr && !d->isEmpty())
+		{
+			this->emit_signal(
+				SIGNAL_D(RoadSection::doTactSignal),
+				command2,
+				d->car
+			);
+		}
+	}
 }
 
 void RoadSection::emitColorHandler(string param)

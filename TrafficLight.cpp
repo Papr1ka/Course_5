@@ -77,7 +77,7 @@ void TrafficLight::getColorHandler(string param)
 	);
 }
 
-void TrafficLight::incrementTicksHandler(string param)
+void TrafficLight::doTactHandler(string param)
 {
 	Colors state = (Colors)this->getState();
 	switch (state)
@@ -113,7 +113,7 @@ void TrafficLight::incrementTicksHandler(string param)
 	}
 }
 
-void TrafficLight::incrementTicks(string param)
+void TrafficLight::incrementTicksHandler(string param)
 {
 	this->ticks++;
 }
